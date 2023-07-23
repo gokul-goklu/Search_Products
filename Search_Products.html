@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #Container {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .cardStyle {
+        height: 200px;
+        width: 200px;
+        background-color: aqua;
+        color: rgb(218, 39, 39);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .imageStyle {
+        height: 50px;
+        width: 50px;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+      #inputSearch {
+        width: 230px;
+        margin-left: 515px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <input type="text" id="inputSearch" placeholder="Search" />
+      <button>Search</button>
+    </div>
+    <div id="Container"></div>
+    <script>
+      let parsed = [];
+
+      fetch("https://fakestoreapi.com/products")
+        .then((data) => data.json())
+        .then((finalResult) => {
+          parsed = finalResult;
+          storedContent(finalResult);
+          // storedData.push(finalResult);
+        });
+
+      const searchInput = document.getElementById("inputSearch");
+
+      function storedContent(datas) {
+        const elemContainer = document.getElementById("Container");
+        // const inputSearch = document.createElement("input");
+        // elemContainer.appendChild(inputSearch);
+        for (let i = 0; i < datas.length; i++) {
+          const card = document.createElement("div");
+          card.className = "cardStyle";
+          const cardTitle = document.createElement("div");
+          const cardPrice = document.createElement("div");
+          const cardPicture = document.createElement("img");
+          cardPicture.src = datas[i].image;
+          cardPicture.className = "imageStyle";
+          cardTitle.innerText = datas[i].title;
+          cardPrice.innerText = datas[i].price;
+          card.appendChild(cardPicture);
+          card.appendChild(cardTitle);
+          card.appendChild(cardPrice);
+
+          elemContainer.appendChild(card);
+        }
+      }
+
+      searchInput.addEventListener("input", () => {
+        let searchText = searchInput.value.trim().toLowerCase();
+        searchFilter(searchText, parsed);
+      });
+
+      function searchFilter(searchText, totalData) {
+        const elemContainer = document.getElementById("Container");
+        console.log(elemContainer);
+        for (let i = 0; i < totalData.length; i++) {
+          const { title } = totalData[i];
+          const finalTitle = title.toLowerCase().trim();
+          const card = elemContainer.children[i];
+
+          console.log(card);
+
+          if (finalTitle.includes(searchText)) {
+            card.style.display = "inline";
+          } else {
+            card.style.display = "none";
+          }
+        }
+        // console.log(searchText);
+        // console.log(parsed);
+      }
+    </script>
+  </body>
+</html>
