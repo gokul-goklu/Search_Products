@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .imgstyle {
+        height: 100px;
+        width: 100px;
+      }
+      .cardstyle {
+        width: 200px;
+        display: flex;
+        background-color: rgb(64, 64, 201);
+        flex-direction: column;
+        gap: 10px;
+      }
+      #containerStyle {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      #searchElement {
+        width: 200px;
+        margin-left: 539px;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="text" id="searchElement" />
+    <div id="containerStyle"></div>
+    <script>
+      let parsed = [];
+      fetch("https://fakestoreapi.com/products")
+        .then((data) => data.json())
+        .then((finalData) => {
+          searchAction(finalData);
+        });
+
+      const search = document.getElementById("searchElement");
+
+      const searchAction = (finalData) => {
+        const container = document.getElementById("containerStyle");
+        parsed = finalData;
+        console.log(finalData);
+        for (let i = 0; i < finalData.length; i++) {
+          const card = document.createElement("div");
+          card.className = "cardstyle";
+          const title = document.createElement("div");
+          const price = document.createElement("div");
+          const imge = document.createElement("img");
+          imge.className = "imgstyle";
+          imge.src = finalData[i].image;
+          title.innerText = finalData[i].title;
+          price.innerText = finalData[i].price;
+          card.appendChild(imge);
+          card.appendChild(title);
+          card.appendChild(price);
+
+          container.appendChild(card);
+        }
+      };
+      search.addEventListener("input", () => {
+        let inputData = search.value.trim().toLowerCase();
+        productSearch(inputData, parsed);
+      });
+
+      const productSearch = (inputData, parsed) => {
+        const container = document.getElementById("containerStyle");
+        for (let i = 0; i < parsed.length; i++) {
+          const { title } = parsed[i];
+          const titleResult = title.toLowerCase().trim();
+          const card = container.children[i];
+
+          if (titleResult.includes(inputData)) {
+            card.style.display = "flex";
+          } else {
+            card.style.display = "none";
+          }
+        }
+        console.log(container);
+      };
+    </script>
+  </body>
+</html>
