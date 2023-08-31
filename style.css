@@ -1,0 +1,30 @@
+#Container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .cardStyle {
+    height: 200px;
+    width: 200px;
+    background-color: aqua;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    align-items: center;
+  }
+  .imageStyle {
+    height: 50px;
+    width: 50px;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    background-color: chartreuse;
+  }
+  #inputSearch {
+    width: 230px;
+    margin-left: 515px;
+  }
